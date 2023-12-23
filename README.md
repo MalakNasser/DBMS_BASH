@@ -4,7 +4,7 @@ Welcome to My DataBase Management System (DBMS) project built entirely with Bash
 
 ## Project Demo
 
-[![Project Demo](https://img.youtube.com/vi/ACTUAL_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=R4PLWrdbOM4)
+[![Project Demo](http://img.youtube.com/vi/YOUTUBE_VIDEO_ID_HERE/0.jpg)](https://www.youtube.com/watch?v=R4PLWrdbOM4)
 
 Click the image above to watch the project demo on YouTube.
 
