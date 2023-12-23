@@ -12,7 +12,7 @@ then
         	echo "----------------------------------------------"
 		echo "          Database: ($dbname) Menu"
             	echo "----------------------------------------------"
-		select choice in "Create a Table" "List Tables" "Drop a Table" "Insert In a Table" "Delete From a Table" "Update To a Table" "Select From a Table" "Exit"
+		select choice in "Create a Table" "List Tables" "Drop a Table" "Insert In a Table" "Delete From a Table" "Select From a Table" "Update To a Table" "Exit"
 	        do
 			case $REPLY in
 				1 )	./TBprocesses/create_tb.sh $dbname
@@ -25,9 +25,9 @@ then
 					;;
 				5 )  	./TBprocesses/delete_tb.sh $dbname
 					;;
-				6 )	./TBprocesses/update_tb.sh $dbname
-					;;
-				7 ) 	./TBprocesses/select_tb.sh $dbname
+				6 )     ./TBprocesses/select_tb.sh $dbname
+                                        ;;
+				7 )	./TBprocesses/update_tb.sh $dbname
 					;;
 				8 )	echo "Exiting Database ($dbname) Menu. Goodbye!"
 					exit

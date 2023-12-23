@@ -1,5 +1,6 @@
 #!/bin/bash
 . ./TBprocesses/list_tb.sh
+PS3="What do you want to delete: "
 if [ "$x" -ne 1 ]
 then
         read -p "Enter table name: " deletetb
@@ -9,10 +10,10 @@ then
 		read -p "Enter the column you want to search in:  " del_col;
 		
 		var=0
-                for (( i = 1; i <= nf; i++ ))
-                do
+        for (( i = 1; i <= nf; i++ ))
+        do
 			field=`awk -F: -v"i=$i" '{if(NR==1){print $i}}' "/home/malak/DBMS_proj/$1/$deletetb";`
-          	     	colname=$(echo "$field" | awk -F- '{print $1}')
+          	colname=$(echo "$field" | awk -F- '{print $1}')
 			if [[ "$colname" ==  "$del_col" ]]
 			then
 				var=$i
@@ -29,33 +30,57 @@ then
 			typeset -i nr=$(($(wc -l < "/home/malak/DBMS_proj/$1/$deletetb")))
 			typeset -i count=0;
 
-			for (( i = 2; i <= nr; i++ ))
-			do
-       		     		if [[ "$del_val" = $(sed -n "${i}p" "/home/malak/DBMS_proj/$1/$deletetb" | cut -f "$var" -d ":") ]]
-				then
-				
-				sed -n "${i}p" "/home/malak/DBMS_proj/$1/$deletetb"
+		select choice in "Delete all" "Delete specific record"
+		do
+			case $REPLY in
+			1 )
+				for (( i = 2; i <= nr; i++ ))
+				do	
+	       		    	 	if [[ "$del_val" = $(sed -n "${i}p" "/home/malak/DBMS_proj/$1/$deletetb" | cut -f "$var" -d ":") ]]
+						then
+							sed -i "${i}d" "/home/malak/DBMS_proj/$1/$deletetb"
+							((count++))
+							((i--))
+				 	fi
+				done
+				echo $count record'(s)' has been deleted
+				exit
+				;;
 
-				read -p "Is that the record you want to delete? y/n: " choice
-                		case $choice in
-                        	[Yy]* )
-                        	        sed -i "${i}d" "/home/malak/DBMS_proj/$1/$deletetb"
-					((count++))
-					((i--))
-					;;
-                        	[Nn]* )
-                               		echo "Operation Canceled"
-                                	;;
-                       		 * )
-                                	echo "Invalid Input"
-                                	;;
-                		esac
-				fi
-       		done
-			cat "/home/malak/DBMS_proj/$1/$deletetb"
-			echo $count record'(s)' has been deleted
+			2 ) 
+				for (( i = 2; i <= nr; i++ ))
+				do
+       		    	 		if [[ "$del_val" = $(sed -n "${i}p" "/home/malak/DBMS_proj/$1/$deletetb" | cut -f "$var" -d ":") ]]
+					then
+					
+						sed -n "${i}p" "/home/malak/DBMS_proj/$1/$deletetb"
+
+						read -p "Is that the record you want to delete? y/n: " choice
+                				case $choice in
+                        			[Yy]* )
+                        			        sed -i "${i}d" "/home/malak/DBMS_proj/$1/$deletetb"
+							((count++))
+							((i--))
+							;;
+         		               		[Nn]* )
+                        	       			echo "Operation Canceled"
+                                			;;
+                       			 	* )
+                                			echo "Invalid Input"
+                                			;;
+                				esac
+					fi
+       				done
+				echo $count record'(s)' has been deleted
+				exit
+				;;
+			* )
+				echo "Invalid Input"
+
+			esac
+		done
 		fi
 	else
-		echo "$deletetb does not exist"
+		echo "($deletetb) does not exist"
 	fi
 fi
